@@ -4,7 +4,7 @@ ID:14255199
 */
 
 #define MAX 100
-#define number 26
+#define number 27
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
@@ -17,9 +17,9 @@ ID:14255199
 using namespace std;
 
 
-#define NUM_LETTERS 26
-char Letters[]={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
-string morsecode[] ={ ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.." };
+
+char Letters[]={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' '};
+string morsecode[] ={ ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."," "};
 
 
 class Message {
@@ -39,7 +39,8 @@ private:
 Message::Message() {
 cout << "Please Enter a message: "<<endl;
 input= new char[MAX];
-cin>>input;
+//cin>>input;
+scanf ("%[^\n]%*c", input);
 cout<<input<<endl;
 }
 
@@ -85,7 +86,7 @@ morseCodeMessage::morseCodeMessage() {
 //cout << "Initializing morse code generator "<<endl;
 morse_msg= new string[strlen(input)];
 //cin>>input;
-//cout<<input<<endl;
+cout<<input<<endl;
 translate();
 print();
 }
@@ -155,21 +156,29 @@ void morseCodeMessage::LED (void)
 
 	                                                        *PBDR &= ~0x40;
 	                                                }
-	                                                else
-	                                                {
-	                                                        cout << "Character not morse code: " << c << endl;
+
+	                                                else if(c == ' '||c == '\0')//if c is a space or end of the input array
+	                                                { 
+							 // Green LED => B7
+							*PBDR |= 0x80;
+	            	                                cout << "Green" << endl;
+	            	                                sleep(1);
+	            	                                *PBDR &= 0x00;
+
+
+	                                                				}
 	                                                }
 	                                        }
 	                                        sleep(1);
 	                                        //usleep(500000);//sleep for .5sec
-	                                }
+
 	                                *PBDR |= 0x80;
 	                                cout << "Green" << endl;
 	                                sleep(1);
-	                                *PBDR |= 0x80;
+	                               *PBDR |= 0x80;
 
 	                                *PBDR &= 0x00;
-	                        }
+	                                }
 
 
 
@@ -247,14 +256,14 @@ if(a==0){
         cout<<"the button 1 is pressed"<<endl;
 cout<<"-"<<endl;
 }
-if(a==1){
+else if(a==1){
         cout<<"the button 1 is not pressed"<<endl;
 }
 if(b==0){
         cout<<"the button 2 is pressed"<<endl;
 cout<<"."<<endl;
 }
-if(b==1)
+else if(b==1)
         cout<<"the button 2 is not pressed"<<endl;
 if(c==0){
         cout<<"the button 3 is pressed"<<endl;
